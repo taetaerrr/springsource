@@ -2,17 +2,19 @@ package com.example.project1.controller;
 
 import java.time.LocalDateTime;
 import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.Date;
 import java.util.List;
 import java.util.stream.LongStream;
 
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
-
-import lombok.extern.log4j.Log4j2;
 import org.springframework.web.bind.annotation.GetMapping;
 
-import dto.LoginDto;
-import dto.SampleDto;
+import com.example.project1.dto.LoginDto;
+import com.example.project1.dto.SampleDto;
+
+import lombok.extern.log4j.Log4j2;
 
 @Log4j2
 @Controller
@@ -20,7 +22,7 @@ public class HomeController {
 
     @GetMapping("/")
     public String home(Model model) {
-        log.info("index요청");
+        log.info("index 요청");
 
         model.addAttribute("name", "hong");
 
@@ -33,7 +35,6 @@ public class HomeController {
         // sampleDto.setLast("Savage");
         // sampleDto.setRegDateTime(LocalDateTime.now());
 
-        // Builder를 쓰게 된다면
         SampleDto sampleDto = SampleDto.builder()
                 .id(1L)
                 .first("Adam")
@@ -47,15 +48,18 @@ public class HomeController {
                 .forEach(i -> {
                     SampleDto dto = SampleDto.builder()
                             .id(i)
-                            .first("first" + i)
+                            .first("fist" + i)
                             .last("last" + i)
                             .regDateTime(LocalDateTime.now())
                             .build();
                     list.add(dto);
-
                 });
         model.addAttribute("list", list);
 
+        model.addAttribute("now", new Date());
+        model.addAttribute("price", 123456789);
+        model.addAttribute("options", Arrays.asList("AAAA", "BBBB", "CCCC", "DDDD"));
+        model.addAttribute("title", "This is a just sample");
         return "index";
     }
 }

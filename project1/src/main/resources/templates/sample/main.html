@@ -6,6 +6,9 @@
     <title>Document</title>
   </head>
   <body>
-    <h1>READ</h1>
+    <div th:insert="~{/fragments/header::header}"></div>
+    <h1>Thymeleaf Layout</h1>
+    <div th:insert="~{/fragments/separate::content}"></div>
+    <div th:replace="~{/fragments/footer::footer}"></div>
   </body>
 </html>

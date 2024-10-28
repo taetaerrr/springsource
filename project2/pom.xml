@@ -5,13 +5,13 @@
 	<parent>
 		<groupId>org.springframework.boot</groupId>
 		<artifactId>spring-boot-starter-parent</artifactId>
-		<version>3.3.4</version>
+		<version>3.3.5</version>
 		<relativePath/> <!-- lookup parent from repository -->
 	</parent>
 	<groupId>com.example</groupId>
-	<artifactId>project1</artifactId>
+	<artifactId>project2</artifactId>
 	<version>0.0.1-SNAPSHOT</version>
-	<name>project1</name>
+	<name>project2</name>
 	<description>Demo project for Spring Boot</description>
 	<url/>
 	<licenses>
@@ -21,7 +21,6 @@
 		<developer/>
 	</developers>
 	<scm>
-	
 		<connection/>
 		<developerConnection/>
 		<tag/>
@@ -35,25 +34,14 @@
 			<groupId>org.springframework.boot</groupId>
 			<artifactId>spring-boot-starter-data-jpa</artifactId>
 		</dependency>
-		<!-- layout 재사용 및 템플릿 상속 -->
-
-		<!-- <dependency>
-			<groupId>nz.nte.ultraq.thymeleaf</groupId>
-			<artifactId>thymeleaf layout dialect</artifactId>
-		</dependency> -->
-		
 		<dependency>
 			<groupId>org.springframework.boot</groupId>
 			<artifactId>spring-boot-starter-thymeleaf</artifactId>
 		</dependency>
-		
-		<!-- 폼 유효성 검증을 서버쪽에서 할 수 있도록 도와줌 -->	
 		<dependency>
 			<groupId>org.springframework.boot</groupId>
 			<artifactId>spring-boot-starter-validation</artifactId>
 		</dependency>
-		
-
 		<dependency>
 			<groupId>org.springframework.boot</groupId>
 			<artifactId>spring-boot-starter-web</artifactId>
