@@ -1,5 +1,5 @@
 package com.example.project2.entity.constant;
 
-public enum Roletype {
+public enum RoleType {
     ADMIN, USER
 }
