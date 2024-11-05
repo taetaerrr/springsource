@@ -18,6 +18,7 @@ import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
 import jakarta.persistence.ManyToOne;
 import jakarta.persistence.OneToMany;
+import jakarta.persistence.OneToOne;
 import jakarta.persistence.SequenceGenerator;
 import jakarta.persistence.Table;
 import lombok.AllArgsConstructor;
@@ -30,13 +31,13 @@ import lombok.ToString;
 @Builder
 @AllArgsConstructor
 @NoArgsConstructor
-@ToString(exclude = "member")
+@ToString(exclude = { "member", "orderItemsList", "delivery" })
 @Setter
 @Getter
 @SequenceGenerator(name = "mart_order_seq_gen", sequenceName = "order_seq", allocationSize = 1)
 @Table(name = "mart_orders")
 @Entity
-public class Order {
+public class Order extends BaseEntity {
 
     @GeneratedValue(strategy = GenerationType.SEQUENCE, generator = "mart_order_seq_gen")
     @Column(name = "order_id")
@@ -51,6 +52,9 @@ public class Order {
 
     @ManyToOne // 관계설정시 무조건 many 쪽에
     private Member member;
+
+    @OneToOne
+    private Delivery delivery;
 
     // OrderItem ==> Order 접근하는 관계는 OrderItem 쪽에 설정
     // 왜? 외래키 있는 쪽에 관계 설정해야함

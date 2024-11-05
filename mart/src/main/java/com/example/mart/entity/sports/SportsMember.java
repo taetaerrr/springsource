@@ -1,11 +1,14 @@
 package com.example.mart.entity.sports;
 
+import com.example.mart.entity.item.BaseEntity;
+
 import jakarta.persistence.Column;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
 import jakarta.persistence.OneToOne;
 import jakarta.persistence.Entity;
+import jakarta.persistence.FetchType;
 import jakarta.persistence.SequenceGenerator;
 import jakarta.persistence.Table;
 import lombok.AllArgsConstructor;
@@ -24,14 +27,14 @@ import lombok.ToString;
 @SequenceGenerator(name = "sports_member_seq_gen", sequenceName = "sports_seq", allocationSize = 1)
 @Table(name = "sports_member")
 @Entity
-public class Member {
+public class SportsMember extends BaseEntity {
     @GeneratedValue(strategy = GenerationType.SEQUENCE, generator = "sports_member_seq_gen")
-    @Column(name = "member_id")
+    @Column(name = "sports_member_id")
     @Id
     private Long id;
 
     private String name;
 
-    @OneToOne
+    @OneToOne(fetch = FetchType.LAZY)
     private Locker locker;
 }

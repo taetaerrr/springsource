@@ -1,12 +1,12 @@
-package com.example.mart.entity.item;
+package com.example.mart.entity.cascade;
 
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
+import jakarta.persistence.ManyToOne;
 import jakarta.persistence.SequenceGenerator;
-import jakarta.persistence.Table;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Getter;
@@ -20,21 +20,18 @@ import lombok.ToString;
 @ToString
 @Setter
 @Getter
-@Table(name = "mart_item")
 @Entity
-public class Item extends BaseEntity {
+public class Child {
 
-    @SequenceGenerator(name = "mart_member_seq_gen", sequenceName = "mart_item_seq", allocationSize = 1)
-
-    @GeneratedValue(strategy = GenerationType.SEQUENCE, generator = "mart_item_seq_gen")
-    @Column(name = "item_id")
+    @SequenceGenerator(name = "child_seq_gen", sequenceName = "child_seq", allocationSize = 1)
+    @GeneratedValue(strategy = GenerationType.SEQUENCE, generator = "child_seq_gen")
     @Id
     private Long id;
 
+    @Column(nullable = false)
     private String name;
 
-    private int price;
-
-    private int quantity;
-
+    // 다대일 n쪽
+    @ManyToOne
+    private Parent parent;
 }
