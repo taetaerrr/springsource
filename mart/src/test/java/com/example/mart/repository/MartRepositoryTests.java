@@ -13,6 +13,9 @@ import com.example.mart.entity.item.Item;
 import com.example.mart.entity.item.Member;
 import com.example.mart.entity.item.Order;
 import com.example.mart.entity.item.OrderItem;
+import com.example.mart.entity.product.Album;
+import com.example.mart.entity.product.Book;
+import com.example.mart.entity.product.Movie;
 import com.example.mart.repository.item.DeliveryRepository;
 import com.example.mart.repository.item.ItemRepository;
 import com.example.mart.repository.item.MemberRepository;
@@ -49,15 +52,38 @@ public class MartRepositoryTests {
 
     @Test
     public void itemInserTest() {
-        itemRepository.save(Item.builder().name("tshirt").price(25300).quantity(15).build());
-        itemRepository.save(Item.builder().name("shoes").price(17300).quantity(20).build());
+        // itemRepository.save(Item.builder().name("tshirt").price(25300).quantity(15).build());
+        // itemRepository.save(Item.builder().name("shoes").price(17300).quantity(20).build());
+
+        Album album = new Album();
+        album.setArtist("로제");
+        album.setName("아파트");
+        album.setPrice(15200);
+        album.setQuantity(15);
+        itemRepository.save(album);
+
+        Book book = new Book();
+        book.setAuthor("한강");
+        book.setIsbn("122ㄱ");
+        book.setName("소년이 온다");
+        book.setPrice(10800);
+        book.setQuantity(15);
+        itemRepository.save(book);
+
+        Movie movie = new Movie();
+        movie.setActor("폴 메스칼");
+        movie.setDirector("라들리 스콧");
+        movie.setName("글래디에이터2");
+        movie.setPrice(25000);
+        movie.setQuantity(300);
+        itemRepository.save(movie);
     }
 
     @Test
     public void overInsertTest() {
 
         Member member = memberRepository.findById(3L).get();
-        Item item = itemRepository.findById(102L).get();
+        Item item = itemRepository.findById(1L).get();
 
         Order order = Order.builder()
                 .overDate(LocalDateTime.now())
@@ -211,14 +237,14 @@ public class MartRepositoryTests {
     // 양방향
     @Test
     public void testDeliveryRead() {
-        Delivery delivery = deliveryRepository.findById(4L).get();
+        Delivery delivery = deliveryRepository.findById(1L).get();
         System.out.println(delivery);
         System.out.println(delivery.getOrder());
     }
 
     @Test
     public void testRead() {
-        Delivery delivery = deliveryRepository.findById(4L).get();
+        Delivery delivery = deliveryRepository.findById(1L).get();
         System.out.println(delivery);
         System.out.println(delivery.getOrder());
     }
