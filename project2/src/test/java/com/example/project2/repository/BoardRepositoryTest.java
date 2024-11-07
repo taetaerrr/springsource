@@ -57,4 +57,11 @@ public class BoardRepositoryTest {
     public void deleteTest() {
         boardRepository.deleteById(15L);
     }
+
+    // 쿼리 메소드
+    @Test
+    public void testTitleList(){
+        boardRepository.findByTitle("Title...").forEach(b->System.out.println(b););
+        boardRepository.findByTitleLike("Title...").forEach(b->System.out.println(b););
+    }
 }

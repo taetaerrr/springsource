@@ -1,6 +1,5 @@
 package com.example.todo.dto;
 
-import org.hibernate.annotations.ColumnDefault;
 
 import lombok.AllArgsConstructor;
 import lombok.Builder;
