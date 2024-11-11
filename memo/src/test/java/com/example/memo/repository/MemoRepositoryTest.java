@@ -26,7 +26,7 @@ public class MemoRepositoryTest {
     @Test
     public void testMemoRead() {
         // 6번 메모 가져오기
-        Memo memo = memoRepository.findById(26L).get();
+        Memo memo = memoRepository.findById(6L).get();
         System.out.println(memo);
 
         System.out.println();
@@ -40,7 +40,7 @@ public class MemoRepositoryTest {
     public void testMemoUpdate() {
 
         // 7번 메모 내용 수정
-        Memo memo = memoRepository.findById(27L).get();
+        Memo memo = memoRepository.findById(7L).get();
         memo.setMemoText("내용 수정");
         memoRepository.save(memo);
     }
@@ -49,6 +49,16 @@ public class MemoRepositoryTest {
     public void testMemoDelete() {
 
         // 메모삭제
-        memoRepository.deleteById(40L);
+        memoRepository.deleteById(4L);
+    }
+
+    @Test
+    public void testMnoList() {
+        // memoRepository.findByMnoLessThan(5L).forEach(b -> System.out.println(b));
+
+        // memoRepository.findByMnoLessThanOrderByMnoDesc(10L).forEach(b ->
+        // System.out.println(b));
+
+        memoRepository.findByMnoBetweenOrderByMnoDesc(20L, 100L).forEach(b -> System.out.println(b));
     }
 }
