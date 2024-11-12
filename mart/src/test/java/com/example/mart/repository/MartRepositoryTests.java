@@ -1,6 +1,8 @@
 package com.example.mart.repository;
 
 import java.time.LocalDateTime;
+import java.util.Arrays;
+import java.util.List;
 
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -82,7 +84,7 @@ public class MartRepositoryTests {
     @Test
     public void overInsertTest() {
 
-        Member member = memberRepository.findById(3L).get();
+        Member member = memberRepository.findById(1L).get();
         Item item = itemRepository.findById(1L).get();
 
         Order order = Order.builder()
@@ -101,6 +103,18 @@ public class MartRepositoryTests {
                 .build();
         orderItemRepository.save(orderItem);
 
+    @Test
+    public void overItemInsertTest() {
+
+       Item item = itemRepository
+
+        OrderItem orderItem = OrderItem.builder()
+                .price(200000)
+                .count(2)
+                .order(order)
+                .item(item)
+                .build();
+        orderItemRepository.save(orderItem);
         // item 수량 감소
 
         // R
@@ -247,5 +261,27 @@ public class MartRepositoryTests {
         Delivery delivery = deliveryRepository.findById(1L).get();
         System.out.println(delivery);
         System.out.println(delivery.getOrder());
+    }
+
+    // querydsl
+    @Test
+    public void testMembers() {
+        System.out.println(orderRepository.members());
+    }
+
+    @Test
+    public void testItems() {
+        System.out.println(orderRepository.items());
+    }
+
+    @Test
+    public void testJoin() {
+        List<Object[]> result = orderRepository.joinTest();
+
+        for (Object[] objects : result) {
+            System.out.println(Arrays.toString(objects));
+            System.out.println((Order) objects[0]);
+            System.out.println((Member) objects[1]);
+        }
     }
 }

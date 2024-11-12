@@ -14,15 +14,16 @@ import org.springframework.web.bind.annotation.ModelAttribute;
 
 import com.example.book.dto.BookDto;
 import com.example.book.dto.CategoryDto;
+import com.example.book.dto.PageRequestDto;
+import com.example.book.dto.PageResultDto;
 import com.example.book.dto.PublisherDto;
+import com.example.book.entity.Book;
 import com.example.book.service.BookService;
 
 import jakarta.validation.Valid;
 
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RequestParam;
 
 @RequiredArgsConstructor
 @Log4j2
@@ -33,10 +34,10 @@ public class BookController {
     private final BookService bookService;
 
     @GetMapping("/list")
-    public void getList(Model model) {
+    public void getList(PageRequestDto requestDto, Model model) {
         log.info("도서 전체 목록 요청");
-        List<BookDto> list = bookService.getList();
-        model.addAttribute("list", list);
+        PageResultDto<BookDto, Book> result = bookService.getList(requestDto);
+        model.addAttribute("result", result);
     }
 
     @GetMapping({ "/read", "/modify" })
@@ -98,7 +99,7 @@ public class BookController {
         // 서비스 insert 호출
         Long id = bookService.create(dto);
 
-        rttr.addFlashAttribute("msg", id + "번 도서가 등록되었습니다.")
+        rttr.addFlashAttribute("msg", id + "번 도서가 등록되었습니다.");
         return "redirect:list";
     }
 
