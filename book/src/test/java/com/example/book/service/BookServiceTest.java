@@ -3,6 +3,7 @@ package com.example.book.service;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
+import org.springframework.transaction.annotation.Transactional;
 
 import com.example.book.dto.BookDto;
 import com.example.book.dto.PageRequestDto;
@@ -15,12 +16,13 @@ public class BookServiceTest {
     @Autowired
     private BookService service;
 
+    @Transactional
     @Test
     public void testList() {
 
         PageRequestDto requestDto = PageRequestDto.builder()
-                .page(3)
-                .size(20)
+                .page(11)
+                .size(10)
                 .build();
 
         PageResultDto<BookDto, Book> resultDto = service.getList(requestDto);
@@ -30,8 +32,9 @@ public class BookServiceTest {
         System.out.println("시작 페이지 " + resultDto.getStart());
         System.out.println("마지막 페이지 " + resultDto.getEnd());
         System.out.println("pageList " + resultDto.getPageList());
-        System.out.println("이전페이지 여부 " + resultDto.isPrev());
-        System.out.println("다음페이지 여부 " + resultDto.isNext());
+        System.out.println("이전 페이지 여부 " + resultDto.isPrev());
+        System.out.println("다음 페이지 여부 " + resultDto.isNext());
         System.out.println("전체 페이지 " + resultDto.getTotalPage());
     }
+
 }

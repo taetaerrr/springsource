@@ -5,6 +5,7 @@ import java.util.function.Function;
 import java.util.stream.Collectors;
 
 import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.domain.Sort;
 import org.springframework.stereotype.Service;
@@ -48,18 +49,19 @@ public class BookServiceImpl implements BookService {
 
     @Override
     public PageResultDto<BookDto, Book> getList(PageRequestDto requestDto) {
+        // 페이지 나누기 개념 없을 때
         // List<Book> result = bookRepository.findAll();
         // return result.stream().map(entity ->
         // entityToDto(entity)).collect(Collectors.toList());
 
-        // 페이지 나누기 개념 추가
+        // 페이지 나누기 + 검색(requestDto.getType(), requestDto.getKeyword()) 개념 추가
         Pageable pageable = requestDto.getPageable(Sort.by("id").descending());
-        Page<Book> result = bookRepository.findAll(bookRepository.makePredicate(null, null), pageable);
+        Page<Book> result = bookRepository
+                .findAll(bookRepository.makePredicate(requestDto.getType(), requestDto.getKeyword()), pageable);
 
         Function<Book, BookDto> fn = (entity -> entityToDto(entity));
 
         return new PageResultDto<>(result, fn);
-
     }
 
     @Override

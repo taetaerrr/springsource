@@ -7,12 +7,10 @@ import org.springframework.data.domain.Sort;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Getter;
-// 생성자를 만들었기 때문에 안씀
-// import lombok.NoArgsConstructor;
 import lombok.Setter;
 import lombok.ToString;
 
-// http://localhost:8080/book/list?page=2&sizw=20&type=c&keyword=소년
+//  http://localhost:8080/book/list?page=2&size=20&type=c&keyword=소년
 
 @ToString
 @Builder
@@ -33,6 +31,7 @@ public class PageRequestDto {
     }
 
     public Pageable getPageable(Sort sort) {
+        // 0 : 1 page
         return PageRequest.of(page - 1, size, sort);
     }
 

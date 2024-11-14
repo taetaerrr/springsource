@@ -11,44 +11,43 @@ import jakarta.persistence.SequenceGenerator;
 import jakarta.persistence.Table;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
-import lombok.Data;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
 import lombok.ToString;
 
-@Builder
 @NoArgsConstructor
 @AllArgsConstructor
-@Data
-@Entity
-@Setter
-@Getter
 @ToString(exclude = { "category", "publisher" })
+@Setter
+@Builder
+@Getter
 @Table(name = "book")
+@Entity
 public class Book extends BaseEntity {
 
     @SequenceGenerator(name = "book_seq_gen", sequenceName = "book_seq", allocationSize = 1)
     @GeneratedValue(strategy = GenerationType.SEQUENCE, generator = "book_seq_gen")
-    @Column(name = "book_id")
     @Id
-    public Long id;
+    @Column(name = "book_id")
+    private Long id;
 
     @Column(nullable = false)
-    public String title;
+    private String title;
 
     @Column(nullable = false)
-    public String writer;
+    private String writer;
 
     @Column(nullable = false)
-    public Integer price;
+    private Integer price;
 
     @Column(nullable = false)
-    public Integer salePrice;
+    private Integer salePrice;
 
     @ManyToOne(fetch = FetchType.LAZY)
     private Category category;
 
     @ManyToOne(fetch = FetchType.LAZY)
     private Publisher publisher;
+
 }

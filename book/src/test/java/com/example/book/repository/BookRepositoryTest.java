@@ -10,11 +10,12 @@ import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.domain.Sort;
 import org.springframework.data.domain.Sort.Direction;
-import org.springframework.transaction.annotation.Transactional;
 
 import com.example.book.entity.Book;
 import com.example.book.entity.Category;
 import com.example.book.entity.Publisher;
+
+import jakarta.transaction.Transactional;
 
 @SpringBootTest
 public class BookRepositoryTest {
@@ -31,8 +32,9 @@ public class BookRepositoryTest {
         // 카테고리 목록
         categoryRepository.findAll().forEach(c -> System.out.println(c));
 
-        // 퍼블리시 목록
+        // publisher 목록
         publisherRepository.findAll().forEach(p -> System.out.println(p));
+
     }
 
     @Test
@@ -47,24 +49,27 @@ public class BookRepositoryTest {
 
     @Test
     public void testPublisherInsert() {
-        // 미래의창, 웅진리빙하우스,김영사,길빗,문학과지성사
+        // 미래의창, 웅진리빙하우스, 김영사, 길벗, 문학과지성사
         publisherRepository.save(Publisher.builder().name("미래의창").build());
         publisherRepository.save(Publisher.builder().name("웅진리빙하우스").build());
         publisherRepository.save(Publisher.builder().name("김영사").build());
-        publisherRepository.save(Publisher.builder().name("길빗").build());
+        publisherRepository.save(Publisher.builder().name("길벗").build());
         publisherRepository.save(Publisher.builder().name("문학과지성사").build());
     }
 
     @Test
     public void testBookInsert() {
-        // 책 카테고리 퍼블리셔 포함
 
-        IntStream.rangeClosed(1, 100).forEach(i -> {
+        // 10권
+        IntStream.rangeClosed(1, 10).forEach(i -> {
+            // 무작위로 publisher, category 지정에 사용
             long num = (int) (Math.random() * 5) + 1;
-            Book book = Book.builder().title("Book" + i)
+
+            Book book = Book.builder()
+                    .title("Book title " + i)
                     .writer("작가" + i)
-                    .price(10000 * i)
-                    .salePrice((int) (10000 * i * 0.9))
+                    .price(15000 * i)
+                    .salePrice((int) (15000 * i * 0.9))
                     .category(Category.builder().id(num).build())
                     .publisher(Publisher.builder().id(num).build())
                     .build();
@@ -72,14 +77,13 @@ public class BookRepositoryTest {
         });
     }
 
-    // lazyinitialization 오류 일땐 lazy를 eager로 바꾸던지 Transactional을 걸던지
     @Transactional
     @Test
     public void testList() {
         // 도서 목록 전체 조회
         bookRepository.findAll().forEach(book -> {
             System.out.println(book);
-            // 카테고리 정보
+            // category 정보
             System.out.println(book.getCategory());
             System.out.println(book.getPublisher());
         });
@@ -106,7 +110,7 @@ public class BookRepositoryTest {
 
     @Test
     public void testDelete() {
-        bookRepository.deleteById(2080L);
+        bookRepository.deleteById(10L);
     }
 
     // 페이지 나누기
@@ -114,14 +118,13 @@ public class BookRepositoryTest {
     public void testPage() {
         // Pageable : 스프링 부트에서 제공하는 페이지 처리 객체
 
-        // 1page / 20 개 최신 도서정보
+        // 1page / 20개 최신 도서정보
         // Pageable pageable = PageRequest.of(0, 0, Direction.DESC);
         Pageable pageable = PageRequest.of(0, 20, Sort.by("id").descending());
-        Page<Book> result = bookRepository
-                .findAll(bookRepository.makePredicate(null, null), pageable);
+        Page<Book> result = bookRepository.findAll(bookRepository.makePredicate(null, null), pageable);
 
-        System.out.println("TotalElements" + result.getTotalElements());
-        System.out.println("TotalPages" + result.getTotalPages());
+        System.out.println("TotalElements " + result.getTotalElements());
+        System.out.println("TotalPages " + result.getTotalPages());
         result.getContent().forEach(book -> System.out.println(book));
     }
 
@@ -129,14 +132,13 @@ public class BookRepositoryTest {
     public void testSearchPage() {
         // Pageable : 스프링 부트에서 제공하는 페이지 처리 객체
 
-        // 1page / 20 개 최신 도서정보
+        // 1page / 20개 최신 도서정보
         // Pageable pageable = PageRequest.of(0, 0, Direction.DESC);
         Pageable pageable = PageRequest.of(0, 20, Sort.by("id").descending());
-        Page<Book> result = bookRepository
-                .findAll(bookRepository.makePredicate("c", "건강"), pageable);
+        Page<Book> result = bookRepository.findAll(bookRepository.makePredicate("c", "건강"), pageable);
 
-        System.out.println("TotalElements" + result.getTotalElements());
-        System.out.println("TotalPages" + result.getTotalPages());
+        System.out.println("TotalElements " + result.getTotalElements());
+        System.out.println("TotalPages " + result.getTotalPages());
         result.getContent().forEach(book -> System.out.println(book));
     }
 }

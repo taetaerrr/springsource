@@ -14,6 +14,7 @@ import lombok.ToString;
 @Builder
 @Getter
 public class CategoryDto {
+
     private Long id;
 
     private String categoryName;

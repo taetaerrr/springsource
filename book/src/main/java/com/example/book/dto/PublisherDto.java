@@ -14,6 +14,7 @@ import lombok.ToString;
 @Builder
 @Getter
 public class PublisherDto {
+
     private Long id;
 
     private String publisherName;

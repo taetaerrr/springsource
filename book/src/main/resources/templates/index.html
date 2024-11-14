@@ -1,16 +1,15 @@
 <!DOCTYPE html>
-<!-- layout상속받는중 -->
-<html lang="en" layout:decorate="~{layouts/layout}">
+<html lang="en" layout:decorate="~{/layouts/layout}">
   <th:block layout:fragment="css">
     <style></style>
   </th:block>
-  <!-- div가 content라고 지정된 layout에 포함될것 -->
+
   <div layout:fragment="content" class="bg-body-tertiary p-5 rounded">
     <h1>INDEX</h1>
   </div>
   <th:block layout:fragment="script">
-    <style>
-      /* 스크립트작성 */
-    </style>
+    <script>
+      //스크립트 작성
+    </script>
   </th:block>
 </html>

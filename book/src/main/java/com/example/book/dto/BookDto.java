@@ -29,7 +29,7 @@ public class BookDto {
     @NotNull(message = "가격을 입력해 주세요")
     private Integer price;
 
-    @NotBlank(message = "할인 가격을 입력해 주세요")
+    @NotNull(message = "할인가격을 입력해 주세요")
     private Integer salePrice;
 
     @NotBlank(message = "카테고리를 입력해 주세요")
