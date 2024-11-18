@@ -24,6 +24,6 @@ public abstract class BaseEntity {
     private LocalDateTime regDate; // 최초 생성 시간
 
     @LastModifiedDate
-    @Column(updatable = false, name = "updatedate")
+    @Column(name = "updatedate") // update_date
     private LocalDateTime updateDate; // 최종 수정 시간
 }

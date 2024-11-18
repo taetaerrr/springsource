@@ -9,6 +9,7 @@ import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 
 import lombok.Data;
+
 // Page<Book> result 결과를 담는 Dto
 // Entity ==> Dto : result.getContent() ==> List<BookDto> 변경
 

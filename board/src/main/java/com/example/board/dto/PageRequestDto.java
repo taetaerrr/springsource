@@ -1,4 +1,4 @@
-package com.example.guestbook.dto;
+package com.example.board.dto;
 
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
