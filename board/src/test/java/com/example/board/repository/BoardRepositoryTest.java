@@ -63,7 +63,7 @@ public class BoardRepositoryTest {
         // 100개
         IntStream.rangeClosed(1, 100).forEach(i -> {
 
-            long bno = (long) (Math.random() * 100) + 1;
+            long bno = (long) (Math.random() * 70) + 4;
             Board board = Board.builder().bno(bno).build();
 
             Reply reply = Reply.builder()
@@ -165,4 +165,15 @@ public class BoardRepositoryTest {
         list.forEach(b -> System.out.println(b));
     }
 
+    @Test
+    public void testReplyUpdate() {
+
+        // 댓글 수정
+        Reply reply = replyRepository.findById(365L).get();
+        System.out.println("reply " + reply);
+        // 내용 수정
+        reply.setText("내용 수정");
+        System.out.println(replyRepository.save(reply));
+
+    }
 }
