@@ -6,6 +6,7 @@ import java.util.function.Function;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Sort;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 import com.example.board.dto.BoardDto;
 import com.example.board.dto.PageRequestDto;
@@ -15,7 +16,6 @@ import com.example.board.entity.Member;
 import com.example.board.repository.BoardRepository;
 import com.example.board.repository.ReplyRepository;
 
-import jakarta.transaction.Transactional;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.log4j.Log4j2;
 
@@ -70,7 +70,7 @@ public class BoardServiceImpl implements BoardService {
         // 댓글 삭제
         replyRepository.deleteByBno(bno);
         // 원본글 삭제
-        replyRepository.deleteById(bno);
+        boardRepository.deleteById(bno);
     }
 
 }

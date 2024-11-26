@@ -11,10 +11,14 @@ import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.domain.Sort;
+import org.springframework.data.jpa.repository.Modifying;
+import org.springframework.security.crypto.password.PasswordEncoder;
+import org.springframework.test.annotation.Commit;
 
 import com.example.board.entity.Board;
 import com.example.board.entity.Member;
 import com.example.board.entity.Reply;
+import com.example.board.entity.constant.MemberRole;
 
 import jakarta.transaction.Transactional;
 
@@ -28,14 +32,18 @@ public class BoardRepositoryTest {
     @Autowired
     private ReplyRepository replyRepository;
 
+    @Autowired
+    private PasswordEncoder passwordEncoder;
+
     @Test
     public void testInsertMember() {
         // 30명
         IntStream.rangeClosed(1, 30).forEach(i -> {
             Member member = Member.builder()
                     .email("user" + i + "@gmail.com")
-                    .password("1111")
+                    .password(passwordEncoder.encode("1111"))
                     .name("user" + i)
+                    .role(MemberRole.MEMBER)
                     .build();
             memberRepository.save(member);
         });
@@ -63,7 +71,8 @@ public class BoardRepositoryTest {
         // 100개
         IntStream.rangeClosed(1, 100).forEach(i -> {
 
-            long bno = (long) (Math.random() * 70) + 4;
+            // 121~220
+            long bno = (long) (Math.random() * 70) + 1;
             Board board = Board.builder().bno(bno).build();
 
             Reply reply = Reply.builder()
@@ -143,6 +152,7 @@ public class BoardRepositoryTest {
         System.out.println(Arrays.toString(object));
     }
 
+    @Commit
     @Transactional
     @Test
     public void testReplyRemove() {
@@ -152,14 +162,13 @@ public class BoardRepositoryTest {
 
     @Test
     public void testReplyRemove2() {
-        // 부모 제거시 자식(reply) 제거
+        // 부모 제거시 자식(Reply) 제거
         boardRepository.deleteById(5L);
     }
 
     @Test
     public void testReplyList() {
-        Board board = Board.builder().bno(17L).build();
-
+        Board board = Board.builder().bno(20L).build();
         List<Reply> list = replyRepository.findByBoardOrderByRno(board);
 
         list.forEach(b -> System.out.println(b));
@@ -167,13 +176,11 @@ public class BoardRepositoryTest {
 
     @Test
     public void testReplyUpdate() {
-
         // 댓글 수정
-        Reply reply = replyRepository.findById(365L).get();
-        System.out.println("reply " + reply);
+        Reply reply = replyRepository.findById(103L).get();
+        System.out.println("reply  " + reply);
         // 내용 수정
-        reply.setText("내용 수정");
+        reply.setText("내용수정");
         System.out.println(replyRepository.save(reply));
-
     }
 }

@@ -4,11 +4,12 @@ import java.util.List;
 
 import com.example.board.dto.ReplyDto;
 import com.example.board.entity.Board;
+import com.example.board.entity.Member;
 import com.example.board.entity.Reply;
 
 public interface ReplyService {
 
-    Long register(ReplyDto dto);
+    Long register(ReplyDto replyDto);
 
     List<ReplyDto> list(Long bno);
 
@@ -19,11 +20,12 @@ public interface ReplyService {
     void remove(Long rno);
 
     // entity => dto
-    public default ReplyDto entityToDto(Reply entity) {
+    default ReplyDto entityToDto(Reply entity) {
         ReplyDto dto = ReplyDto.builder()
                 .rno(entity.getRno())
                 .text(entity.getText())
-                .replyer(entity.getReplyer())
+                .replyerEmail(entity.getReplyer().getEmail())
+                .replyerName(entity.getReplyer().getName())
                 .bno(entity.getBoard().getBno())
                 .regDate(entity.getRegDate())
                 .updateDate(entity.getUpdateDate())
@@ -32,13 +34,17 @@ public interface ReplyService {
     }
 
     // dto=> entity
-    public default Reply dtoToEntity(ReplyDto dto) {
+    default Reply dtoToEntity(ReplyDto dto) {
+
         Board board = Board.builder().bno(dto.getBno()).build();
-        return Reply.builder()
+        Member member = Board.builder().email(dto.getReplyerEmail()).build();
+
+        Reply entity = Reply.builder()
                 .rno(dto.getRno())
                 .text(dto.getText())
-                .replyer(dto.getReplyer())
+                .replyer(member)
                 .board(board)
                 .build();
+        return entity;
     }
 }

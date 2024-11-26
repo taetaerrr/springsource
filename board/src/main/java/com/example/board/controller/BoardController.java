@@ -1,5 +1,6 @@
 package com.example.board.controller;
 
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.validation.BindingResult;
@@ -45,6 +46,8 @@ public class BoardController {
 
     }
 
+    // 로그인 사용자 == 작성자
+    @PreAuthorize("authentication.name == #dto.writerEmail")
     @PostMapping("/modify")
     public String postModify(BoardDto dto, @ModelAttribute("requestDto") PageRequestDto requestDto,
             RedirectAttributes rttr) {
@@ -62,10 +65,11 @@ public class BoardController {
         return "redirect:/board/read";
     }
 
+    @PreAuthorize("authentication.name == #writerEmail")
     @PostMapping("/remove")
-    public String postRemove(Long bno, RedirectAttributes rttr,
-            @ModelAttribute("requestDto") PageRequestDto requestDto) {
-        log.info("삭제 {}", bno);
+    public String postRemove(Long bno, String writerEmail, @ModelAttribute("requestDto") PageRequestDto requestDto,
+            RedirectAttributes rttr) {
+        log.info("삭제 요청 {}", bno);
 
         boardService.remove(bno);
 
@@ -82,6 +86,7 @@ public class BoardController {
         log.info("등록 폼 요청");
     }
 
+    @PreAuthorize("isAuthenticated()")
     @PostMapping("/create")
     public String postCreate(@Valid @ModelAttribute("dto") BoardDto dto, BindingResult result,
             @ModelAttribute("requestDto") PageRequestDto requestDto, RedirectAttributes rttr) {
@@ -93,14 +98,14 @@ public class BoardController {
 
         // service
         Long bno = boardService.register(dto);
-        rttr.addAttribute("msg", bno);
-        rttr.addAttribute("bno", dto.getBno());
+
+        rttr.addAttribute("bno", bno);
         rttr.addAttribute("page", requestDto.getPage());
         rttr.addAttribute("size", requestDto.getSize());
         rttr.addAttribute("type", requestDto.getType());
         rttr.addAttribute("keyword", requestDto.getKeyword());
 
-        return "redirect:/board/list";
+        return "redirect:/board/read";
     }
 
 }

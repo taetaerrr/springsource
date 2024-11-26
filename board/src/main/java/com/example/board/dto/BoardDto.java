@@ -4,7 +4,6 @@ import java.time.LocalDateTime;
 
 import com.example.board.entity.Member;
 
-import groovyjarjarantlr4.v4.runtime.misc.NotNull;
 import jakarta.persistence.Column;
 import jakarta.persistence.FetchType;
 import jakarta.persistence.ManyToOne;
@@ -22,17 +21,17 @@ import lombok.NoArgsConstructor;
 public class BoardDto {
     private Long bno;
 
-    @NotBlank(message = "title 은 필수 입력 요소입니다.")
+    @NotBlank(message = "제목은 필수 입력 요소입니다.")
     private String title;
-
-    @NotBlank(message = "content 은 필수 입력 요소입니다.")
+    @NotBlank(message = "내용은 필수 입력 요소입니다.")
     private String content;
 
     // private Member member;
     // private String email;
     // private String name;
 
-    @NotBlank(message = "writerEmail 은 필수 입력 요소입니다.")
+    @NotBlank(message = "작성자는 필수 입력 요소입니다.")
+
     private String writerEmail;
 
     private String writerName;

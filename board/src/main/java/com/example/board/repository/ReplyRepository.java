@@ -1,12 +1,13 @@
 package com.example.board.repository;
 
+import java.util.List;
+
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Modifying;
 import org.springframework.data.jpa.repository.Query;
 
 import com.example.board.entity.Board;
 import com.example.board.entity.Reply;
-import java.util.List;
 
 public interface ReplyRepository extends JpaRepository<Reply, Long> {
 

@@ -6,8 +6,6 @@ import jakarta.persistence.SequenceGenerator;
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
 import jakarta.persistence.FetchType;
-import jakarta.persistence.GeneratedValue;
-import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
 import jakarta.persistence.ManyToOne;
 import jakarta.persistence.SequenceGenerator;
@@ -35,7 +33,8 @@ public class Reply extends BaseEntity {
     @Column(nullable = false)
     private String text;
 
-    private String replyer;
+    @ManyToOne(fetch = FetchType.LAZY)
+    private Member replyer;
 
     // fetch=>EAGER
     @ManyToOne(fetch = FetchType.LAZY)

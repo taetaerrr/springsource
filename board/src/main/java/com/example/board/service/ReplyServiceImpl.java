@@ -29,6 +29,7 @@ public class ReplyServiceImpl implements ReplyService {
     public List<ReplyDto> list(Long bno) {
         Board board = Board.builder().bno(bno).build();
         List<Reply> list = replyRepository.findByBoardOrderByRno(board);
+
         return list.stream().map(reply -> entityToDto(reply)).collect(Collectors.toList());
     }
 
@@ -39,8 +40,8 @@ public class ReplyServiceImpl implements ReplyService {
 
     @Override
     public Long modify(ReplyDto replyDto) {
-        Reply reply = replyRepository.findById(365L).get();
 
+        Reply reply = replyRepository.findById(replyDto.getRno()).get();
         // 내용 수정
         reply.setText(replyDto.getText());
         return replyRepository.save(reply).getRno();
@@ -48,7 +49,7 @@ public class ReplyServiceImpl implements ReplyService {
 
     @Override
     public void remove(Long rno) {
-        replyRepository.deleteByBno(rno);
+        replyRepository.deleteById(rno);
     }
 
 }
