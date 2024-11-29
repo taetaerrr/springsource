@@ -3,6 +3,8 @@ package com.example.movie.service;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
+import java.util.Map;
+import java.util.UUID;
 import java.util.function.Function;
 
 import org.springframework.data.domain.Page;
@@ -51,14 +53,35 @@ public class MovieServiceImpl implements MovieService {
 
     @Override
     public Long register(MovieDto movieDto) {
-        // TODO Auto-generated method stub
-        throw new UnsupportedOperationException("Unimplemented method 'register'");
+
+        Map<String, Object> entityMap = dtoToEntity(movieDto);
+
+        Movie movie = (Movie) entityMap.get("movie");
+        List<MovieImage> movieImages = (List<MovieImage>) entityMap.get("movieImages");
+
+        movieRepository.save(movie);
+        movieImages.forEach(movieImage -> movieImageRepository.save(movieImage));
+
+        return movie.getMno();
     }
 
+    @Transactional
     @Override
     public Long modify(MovieDto movieDto) {
-        // TODO Auto-generated method stub
-        throw new UnsupportedOperationException("Unimplemented method 'modify'");
+
+        Map<String, Object> entityMap = dtoToEntity(movieDto);
+
+        Movie movie = (Movie) entityMap.get("movie");
+        List<MovieImage> movieImages = (List<MovieImage>) entityMap.get("movieImages");
+
+        movieRepository.save(movie);
+
+        // 기존의 영화 이미지는 제거
+        movieImageRepository.deleteByMovie(movie);
+
+        movieImages.forEach(movieImage -> movieImageRepository.save(movieImage));
+
+        return movie.getMno();
     }
 
     @Transactional

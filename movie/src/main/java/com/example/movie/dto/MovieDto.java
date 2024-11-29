@@ -4,6 +4,8 @@ import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.List;
 
+import jakarta.validation.constraints.NotEmpty;
+import jakarta.validation.constraints.NotNull;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
@@ -16,6 +18,8 @@ import lombok.NoArgsConstructor;
 public class MovieDto {
 
     private Long mno;
+
+    @NotEmpty(message = "제목은 필수 요소 입니다.")
     private String title;
 
     // 영화에 소속된 이미지 가져오기
