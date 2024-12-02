@@ -67,6 +67,7 @@ public class MemberController {
 
     }
 
+    // 개발자용 Authenticated 확인용
     @PreAuthorize("isAuthenticated()")
     @ResponseBody
     @GetMapping("/auth")
