@@ -12,7 +12,9 @@ import com.example.movie.dto.AuthMemberDto;
 import com.example.movie.dto.MemberDto;
 import com.example.movie.dto.PasswordDto;
 import com.example.movie.entity.Member;
+import com.example.movie.entity.constant.MemberRole;
 import com.example.movie.repository.MemberRepository;
+import com.example.movie.repository.ReviewRepository;
 
 import jakarta.transaction.Transactional;
 import lombok.RequiredArgsConstructor;
@@ -25,6 +27,7 @@ public class MemberDetailsServiceImpl implements UserDetailsService, MemberServi
 
     private final MemberRepository memberRepository;
     private final PasswordEncoder passwordEncoder;
+    private final ReviewRepository reviewRepository;
 
     @Override
     public UserDetails loadUserByUsername(String username) throws UsernameNotFoundException {
@@ -69,7 +72,7 @@ public class MemberDetailsServiceImpl implements UserDetailsService, MemberServi
         Member member = memberRepository.findByEmail(passwordDto.getEmail()).get();
 
         // 현재 비밀번호가 입력 비밀번호와 일치하는지 검증
-        if (passwordEncoder.matches(passwordDto.getCurrentPassword(), member.getPassword())) {
+        if (!passwordEncoder.matches(passwordDto.getCurrentPassword(), member.getPassword())) {
             // false : 되돌려 보내기
             throw new Exception("현재 비밀번호를 확인");
         } else {
@@ -79,6 +82,26 @@ public class MemberDetailsServiceImpl implements UserDetailsService, MemberServi
             memberRepository.save(member);
         }
 
+    }
+
+    @Transactional
+    @Override
+    public void leave(PasswordDto passwordDto) throws Exception {
+
+        Member member = memberRepository.findByEmail(passwordDto.getEmail()).get();
+
+        // 리뷰 삭제(리뷰를 작성한 멤버를 이용해서 삭제)
+        reviewRepository.deleteByMember(member);
+        // 회원 삭제
+        memberRepository.deleteById(member.getMid());
+    }
+
+    @Override
+    public String register(MemberDto memberDto) {
+        Member member = dtoToEntity(memberDto);
+        member.setPassword(passwordEncoder.encode(member.getPassword()));
+
+        return memberRepository.save(member).getNickname();
     }
 
 }
