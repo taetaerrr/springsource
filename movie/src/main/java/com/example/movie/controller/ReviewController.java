@@ -2,6 +2,7 @@ package com.example.movie.controller;
 
 import java.util.List;
 
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.RequestMapping;
 
@@ -61,6 +62,7 @@ public class ReviewController {
     }
 
     // ~~/reviews/mno/reviewno + @putmapping +ReviewDto
+    @PreAuthorize("autentication.name == #reviewDto.email")
     @PutMapping("/{mno}/{reviewNo}")
     public Long putMethodName(@PathVariable Long reviewNo, @RequestBody ReviewDto reviewDto) {
         log.info("리뷰 수정 {} {}", reviewNo, reviewDto);

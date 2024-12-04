@@ -5,6 +5,7 @@ import org.springframework.security.core.Authentication;
 import org.springframework.security.core.context.SecurityContext;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Controller;
+import org.springframework.ui.Model;
 import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.RequestMapping;
 
@@ -41,7 +42,6 @@ public class MemberController {
         log.info("로그인 폼 요청");
     }
 
-    // 인증이 되어있어야 가능하게
     @PreAuthorize("isAuthenticated()")
     @GetMapping("/profile")
     public void getProfile(@ModelAttribute("requestDto") PageRequestDto pageRequestDto) {
@@ -62,7 +62,6 @@ public class MemberController {
 
         // email 가져오기
         Authentication authentication = getAuthentication();
-
         // MemberDto 에 들어있는 값 접근 시
         AuthMemberDto authMemberDto = (AuthMemberDto) authentication.getPrincipal();
         memberDto.setEmail(authMemberDto.getUsername());
@@ -78,7 +77,7 @@ public class MemberController {
     // 비밀번호 수정
     @PreAuthorize("isAuthenticated()")
     @PostMapping("/edit/password")
-    public String postPassword(PasswordDto passwordDto, HttpSession session, RedirectAttributes rttr) {
+    public String postPassowrdUpdate(PasswordDto passwordDto, HttpSession session, RedirectAttributes rttr) {
         log.info("비밀번호 수정 {}", passwordDto);
 
         // 서비스 호출
@@ -90,10 +89,9 @@ public class MemberController {
             rttr.addFlashAttribute("error", e.getMessage());
             return "redirect:/member/edit";
         }
-        // 성공시 세션 해제 후 /login
+        // 성공 시 세션 해제 후 /login 이동
         session.invalidate();
         return "redirect:/member/login";
-
     }
 
     @PreAuthorize("isAuthenticated()")
@@ -104,8 +102,9 @@ public class MemberController {
 
     @PreAuthorize("isAuthenticated()")
     @PostMapping("/leave")
-    public String postMethodName(PasswordDto passwordDto, boolean check, HttpSession session, RedirectAttributes rttr) {
-        log.info("회원 탈퇴 요청 {}, {}", passwordDto, check);
+    public String postLeave(PasswordDto passwordDto, boolean check, HttpSession session,
+            RedirectAttributes rttr) {
+        log.info("회원탈퇴 요청 {}, {}", passwordDto, check);
 
         if (!check) {
             rttr.addFlashAttribute("error", "체크 표시를 확인해 주세요");
@@ -126,15 +125,21 @@ public class MemberController {
 
     // 회원가입
     @GetMapping("/register")
-    public void getRegister(@ModelAttribute("requestDto") PageRequestDto pageRequestDto) {
-        log.info("회원 가입 폼 요청");
+    public void getRegister(MemberDto memberDto, @ModelAttribute("requestDto") PageRequestDto pageRequestDto) {
+        log.info("회원가입 폼 요청");
     }
 
     @PostMapping("/register")
-    public String postRegister(@Valid MemberDto memberDto, BindingResult result, boolean check) {
-        log.info("회원 가입 요청 {}", memberDto);
+    public String postRegister(@Valid MemberDto memberDto, BindingResult result, boolean check,
+            @ModelAttribute("requestDto") PageRequestDto pageRequestDto, Model model) {
+        log.info("회원가입 요청 {}", memberDto);
 
         if (result.hasErrors()) {
+            return "/member/register";
+        }
+
+        if (!check) {
+            model.addAttribute("check", "약관에 동의하셔야합니다.");
             return "/member/register";
         }
 
@@ -143,11 +148,11 @@ public class MemberController {
         return "redirect:/member/login";
     }
 
-    // 개발자용 Authenticated 확인용
+    // 개발자용 - Authentication 확인용
     @PreAuthorize("isAuthenticated()")
     @ResponseBody
     @GetMapping("/auth")
-    public Authentication getAuthentication(@ModelAttribute("requestDto") PageRequestDto pageRequestDto) {
+    public Authentication getAuthentication() {
 
         SecurityContext context = SecurityContextHolder.getContext();
         Authentication authentication = context.getAuthentication();
