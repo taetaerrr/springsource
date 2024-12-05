@@ -10,7 +10,7 @@ import com.example.movie.entity.constant.MemberRole;
 public interface MemberService {
 
     // 닉네임 수정
-    void nickNameUpdate(MemberDto memberDto);
+    void nickNickUpdate(MemberDto memberDto);
 
     // 비밀번호 수정
     void passwordUpdate(PasswordDto passwordDto) throws Exception;
@@ -23,14 +23,12 @@ public interface MemberService {
 
     default Member dtoToEntity(MemberDto memberDto) {
         Member member = Member.builder()
-                // .mid(memberDto.getMid())
                 .email(memberDto.getEmail())
                 .password(memberDto.getPassword())
                 .nickname(memberDto.getNickname())
                 .role(MemberRole.MEMBER)
                 .build();
         return member;
-
     }
 
     // default MemberDto entityToDto(Member member) {

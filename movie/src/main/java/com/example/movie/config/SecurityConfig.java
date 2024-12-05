@@ -25,18 +25,20 @@ public class SecurityConfig {
                 .requestMatchers("/movie/list", "/member/register").permitAll()
                 .requestMatchers("/movie/modify").hasRole("ADMIN")
                 .anyRequest().authenticated());
-        http.formLogin(login -> login.loginPage("/member/login").permitAll().defaultSuccessUrl("/movie/list"));
+        http.formLogin(login -> login
+                .loginPage("/member/login").permitAll()
+                .defaultSuccessUrl("/movie/list"));
 
         http.sessionManagement(session -> session.sessionCreationPolicy(SessionCreationPolicy.ALWAYS));
+
         http.logout(logout -> logout
                 .logoutRequestMatcher(new AntPathRequestMatcher("/member/logout"))
                 .logoutSuccessUrl("/"));
-
         // http.csrf(csrf -> csrf.disable());
 
         // 403 을 정적 페이지로 처리 시
         // http.exceptionHandling(exception ->
-        // exception.accessDeniedPage("/accesdenied.html"));
+        // exception.accessDeniedPage("/accessdenied.html"));
 
         // 403 을 핸들러로 처리 시
         http.exceptionHandling(exception -> exception.accessDeniedHandler(customAccessDeniedHandler()));
@@ -44,6 +46,7 @@ public class SecurityConfig {
         return http.build();
     }
 
+    @Bean
     CustomAccessDeniedHandler customAccessDeniedHandler() {
         return new CustomAccessDeniedHandler();
     }
@@ -52,5 +55,4 @@ public class SecurityConfig {
     PasswordEncoder passwordEncoder() {
         return PasswordEncoderFactories.createDelegatingPasswordEncoder();
     }
-
 }

@@ -61,12 +61,10 @@ public class MovieRepositoryTest {
         }
     }
 
-    // 테이블이 여러개들어가기 때문에 @Transactional 써야함
     @Transactional
     @Test
     public void testRemove() {
 
-        // 자식레코드가 껴있을때 지우는 방법
         Movie movie = Movie.builder().mno(50L).build();
 
         movieImageRepository.deleteByMovie(movie);
@@ -76,12 +74,12 @@ public class MovieRepositoryTest {
         movieRepository.delete(movie);
     }
 
-    @Commit
-    @Transactional
+    // @Commit
+    // @Transactional
     @Test
     public void testRemove2() {
 
-        Movie movie = movieRepository.findById(48L).get();
+        Movie movie = movieRepository.findById(49L).get();
 
         movieRepository.delete(movie);
     }

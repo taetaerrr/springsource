@@ -5,7 +5,6 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 import java.util.UUID;
-import java.util.stream.Collector;
 import java.util.stream.Collectors;
 
 import com.example.movie.dto.MovieDto;
@@ -73,9 +72,7 @@ public interface MovieService {
         // MovieImageDto => MovieImage 변경 후 MovieImage List 형태로 작성
         // List<MovieImage> movieImages = new ArrayList<>();
         // if (movieImageDtos != null && movieImageDtos.size() > 0) {
-
         // movieImageDtos.forEach(dto -> {
-
         // MovieImage movieImage = MovieImage.builder()
         // .uuid(dto.getUuid())
         // .imgName(dto.getImgName())

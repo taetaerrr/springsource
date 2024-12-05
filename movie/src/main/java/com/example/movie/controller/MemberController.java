@@ -65,7 +65,7 @@ public class MemberController {
         // MemberDto 에 들어있는 값 접근 시
         AuthMemberDto authMemberDto = (AuthMemberDto) authentication.getPrincipal();
         memberDto.setEmail(authMemberDto.getUsername());
-        memberService.nickNameUpdate(memberDto);
+        memberService.nickNickUpdate(memberDto);
 
         // SecurityContext 에 보관된 값 업데이트
         authMemberDto.getMemberDto().setNickname(memberDto.getNickname());
@@ -139,8 +139,8 @@ public class MemberController {
         }
 
         if (!check) {
-            model.addAttribute("check", "약관에 동의하셔야합니다.");
-            return "/member/register";
+            model.addAttribute("check", "약관에 동의하셔야 합니다.");
+            return "/member/register"; // forward
         }
 
         memberService.register(memberDto);

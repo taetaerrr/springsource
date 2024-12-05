@@ -39,12 +39,10 @@ public class Movie extends BaseEntity {
 
     // 자식 연관관계 추가(양방향)
     // @Builder.Default
-    // // onetomany는 주인을 알려줘야한다
     // @OneToMany(mappedBy = "movie", cascade = CascadeType.REMOVE)
     // List<MovieImage> movieImages = new ArrayList<>();
 
     // @Builder.Default
-    // // onetomany는 주인을 알려줘야한다
     // @OneToMany(mappedBy = "movie", cascade = CascadeType.REMOVE)
     // List<Review> reviews = new ArrayList<>();
 }

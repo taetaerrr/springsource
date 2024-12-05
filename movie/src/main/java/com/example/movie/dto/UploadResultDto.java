@@ -14,8 +14,8 @@ import lombok.NoArgsConstructor;
 public class UploadResultDto {
     // uuid, fileName, folderPath
     private String uuid;
-    private String fileName;
-    private String folderPath;
+    private String fileName; // 원본파일명
+    private String folderPath; // 년/월/일
 
     // 썸네일 경로
     public String getThumbImageURL() {
@@ -23,7 +23,6 @@ public class UploadResultDto {
         try {
             fullPath = URLEncoder.encode(folderPath + File.separator + "s_" + uuid + "_" + fileName, "utf-8");
         } catch (UnsupportedEncodingException e) {
-
             e.printStackTrace();
         }
         return fullPath;
@@ -35,9 +34,9 @@ public class UploadResultDto {
         try {
             fullPath = URLEncoder.encode(folderPath + File.separator + uuid + "_" + fileName, "utf-8");
         } catch (UnsupportedEncodingException e) {
-
             e.printStackTrace();
         }
         return fullPath;
     }
+
 }

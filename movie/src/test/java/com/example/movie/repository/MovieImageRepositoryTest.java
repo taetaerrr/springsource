@@ -45,11 +45,16 @@ public class MovieImageRepositoryTest {
 
     @Test
     public void testRow() {
-
         List<Object[]> result = movieImageRepository.getMovieRow(1L);
 
         for (Object[] objects : result) {
             System.out.println(Arrays.toString(objects));
         }
+    }
+
+    @Test
+    public void testGetOldFile() {
+        List<MovieImage> oldList = movieImageRepository.findOldFileAll();
+        System.out.println(oldList);
     }
 }

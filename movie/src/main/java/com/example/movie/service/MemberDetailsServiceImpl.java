@@ -7,6 +7,7 @@ import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 import com.example.movie.dto.AuthMemberDto;
 import com.example.movie.dto.MemberDto;
@@ -16,7 +17,6 @@ import com.example.movie.entity.constant.MemberRole;
 import com.example.movie.repository.MemberRepository;
 import com.example.movie.repository.ReviewRepository;
 
-import jakarta.transaction.Transactional;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.log4j.Log4j2;
 
@@ -26,8 +26,8 @@ import lombok.extern.log4j.Log4j2;
 public class MemberDetailsServiceImpl implements UserDetailsService, MemberService {
 
     private final MemberRepository memberRepository;
-    private final PasswordEncoder passwordEncoder;
     private final ReviewRepository reviewRepository;
+    private final PasswordEncoder passwordEncoder;
 
     @Override
     public UserDetails loadUserByUsername(String username) throws UsernameNotFoundException {
@@ -37,14 +37,13 @@ public class MemberDetailsServiceImpl implements UserDetailsService, MemberServi
         Optional<Member> result = memberRepository.findByEmail(username);
 
         if (!result.isPresent()) {
-            throw new UsernameNotFoundException("이메일을 확인 해주세요");
+            throw new UsernameNotFoundException("이메일 확인");
         }
 
         // 이메일이 존재한다면 entity => dto 변경
         Member member = result.get();
 
-        MemberDto memberDto = MemberDto
-                .builder()
+        MemberDto memberDto = MemberDto.builder()
                 .mid(member.getMid())
                 .email(member.getEmail())
                 .nickname(member.getNickname())
@@ -57,31 +56,29 @@ public class MemberDetailsServiceImpl implements UserDetailsService, MemberServi
 
     @Transactional
     @Override
-    public void nickNameUpdate(MemberDto memberDto) {
+    public void nickNickUpdate(MemberDto memberDto) {
 
         memberRepository.updateNickName(memberDto.getNickname(), memberDto.getEmail());
     }
 
     @Override
     public void passwordUpdate(PasswordDto passwordDto) throws Exception {
-        // email을 이용해 사용자 찾기
+        // email 을 이용해 사용자 찾기
         // Optional<Member> result =
         // memberRepository.findByEmail(passwordDto.getEmail());
-        // if(!result.isPresent()) throw new UsernameNotFoundException("이메일 확인");
+        // if (!result.isPresent()) throw new UsernameNotFoundException("이메일 확인");
 
         Member member = memberRepository.findByEmail(passwordDto.getEmail()).get();
 
-        // 현재 비밀번호가 입력 비밀번호와 일치하는지 검증
+        // 현재 비밀번호(db에 저장된 값)가 입력 비밀번호(입력값)와 일치하는지 검증
         if (!passwordEncoder.matches(passwordDto.getCurrentPassword(), member.getPassword())) {
             // false : 되돌려 보내기
-            throw new Exception("현재 비밀번호를 확인");
+            throw new Exception("현재 비밀번호를 확인해 주세요");
         } else {
-
             // true : 새 비밀번호로 수정
             member.setPassword(passwordEncoder.encode(passwordDto.getNewPassword()));
             memberRepository.save(member);
         }
-
     }
 
     @Transactional
@@ -90,9 +87,13 @@ public class MemberDetailsServiceImpl implements UserDetailsService, MemberServi
 
         Member member = memberRepository.findByEmail(passwordDto.getEmail()).get();
 
-        // 리뷰 삭제(리뷰를 작성한 멤버를 이용해서 삭제)
+        if (!passwordEncoder.matches(passwordDto.getCurrentPassword(), member.getPassword())) {
+            throw new Exception("현재 비밀번호를 확인해 주세요");
+        }
+
+        // 리뷰삭제(리뷰를 작성한 멤버를 이용해서 삭제)
         reviewRepository.deleteByMember(member);
-        // 회원 삭제
+        // 회원삭제
         memberRepository.deleteById(member.getMid());
     }
 

@@ -10,7 +10,6 @@ import jakarta.servlet.ServletException;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
 
-@Component
 public class CustomAccessDeniedHandler implements AccessDeniedHandler {
 
     @Override
@@ -20,5 +19,4 @@ public class CustomAccessDeniedHandler implements AccessDeniedHandler {
         // 컨트롤러 경로 지정
         response.sendRedirect("/access-denied");
     }
-
 }

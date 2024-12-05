@@ -56,13 +56,12 @@ public class MovieImageReviewRepositoryImpl extends QuerydslRepositorySupport im
                 builder.and(movie.mno.gt(0L));
 
                 if (type != null && type.trim().length() != 0) {
-
                         // 영화명 검색
                         BooleanBuilder conditionBuilder = new BooleanBuilder();
                         if (type.contains("t")) {
                                 conditionBuilder.or(movie.title.contains(keyword));
-
                         }
+
                         builder.and(conditionBuilder);
                 }
 
@@ -112,6 +111,7 @@ public class MovieImageReviewRepositoryImpl extends QuerydslRepositorySupport im
                                 .orderBy(movieImage.inum.desc());
 
                 List<Tuple> result = tuple.fetch();
+
                 return result.stream().map(t -> t.toArray()).collect(Collectors.toList());
         }
 

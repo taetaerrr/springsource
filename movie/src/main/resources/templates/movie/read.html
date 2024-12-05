@@ -66,8 +66,7 @@
         </ul>
       </div>
 
-      <div>
-        
+      <div>        
           <a
           class="flex items-center justify-between p-4 mb-8 text-sm font-semibold text-purple-100 bg-purple-600 rounded-lg shadow-md focus:outline-none focus:shadow-outline-purple"
           href="https://github.com/estevanmaito/windmill-dashboard"
@@ -93,9 +92,9 @@
           <input
             name = "nickname"
             class="block w-full mt-1 text-sm dark:border-gray-600 dark:bg-gray-700 focus:border-purple-400 focus:outline-none focus:shadow-outline-purple dark:text-gray-300 dark:focus:shadow-outline-gray form-input"
-            placeholder="작성자"
-            readonly
-            th:value="${#authentication.principal.memberDto.nickname}"         
+            placeholder="작성자"   
+            readonly    
+            th:value="${#authentication.principal.memberDto.nickname}"   
           />
         </label>
         <label class="block text-sm mt-2">
@@ -148,10 +147,10 @@
     <script src="https://code.jquery.com/jquery-3.7.1.min.js" integrity="sha256-/JqT3SQfawRcv/BIHPThkBvs0OEvtFFmqPF/lYI/Cxo=" crossorigin="anonymous"></script>
     <script th:src="@{/assets/js/starrr.js}"></script>
     <script>
-      const csrfValue = '[[${_csrf.token}]]';   
-      
+      const csrfValue = '[[${_csrf.token}]]'; 
+
       // 로그인 사용자 정보 가져오기
-      const loginUser = '[[${#authentication.name}]]';   
+      const loginUser = '[[${#authentication.name}]]';
 
       // 영화명 
       const title = '[[${movieDto.title}]]';

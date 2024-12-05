@@ -33,7 +33,6 @@ public class MovieImageDto {
         try {
             fullPath = URLEncoder.encode(path + File.separator + "s_" + uuid + "_" + imgName, "utf-8");
         } catch (UnsupportedEncodingException e) {
-
             e.printStackTrace();
         }
         return fullPath;
@@ -45,7 +44,6 @@ public class MovieImageDto {
         try {
             fullPath = URLEncoder.encode(path + File.separator + uuid + "_" + imgName, "utf-8");
         } catch (UnsupportedEncodingException e) {
-
             e.printStackTrace();
         }
         return fullPath;

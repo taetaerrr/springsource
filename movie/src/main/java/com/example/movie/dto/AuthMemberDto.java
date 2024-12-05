@@ -7,9 +7,16 @@ import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.authority.SimpleGrantedAuthority;
 import org.springframework.security.core.userdetails.User;
 
+import lombok.Getter;
+import lombok.Setter;
+import lombok.ToString;
+
+@ToString
+@Setter
+@Getter
 public class AuthMemberDto extends User {
 
-    public MemberDto memberDto;
+    private MemberDto memberDto;
 
     public AuthMemberDto(String username, String password, Collection<? extends GrantedAuthority> authorities) {
         super(username, password, authorities);
@@ -20,9 +27,4 @@ public class AuthMemberDto extends User {
                 List.of(new SimpleGrantedAuthority("ROLE_" + memberDto.getRole())));
         this.memberDto = memberDto;
     }
-
-    public MemberDto getMemberDto() {
-        return memberDto;
-    }
-
 }
