@@ -24,6 +24,7 @@ import com.example.mybatis.service.BookService;
 import jakarta.validation.Valid;
 
 import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.RequestBody;
 
 @RequiredArgsConstructor
 @Log4j2
@@ -35,22 +36,22 @@ public class BookController {
 
     // 리스트 추출
     @GetMapping("/list")
-    // list.html에서 model / requstDto의 값을 사용할 수 있음, @ModelAttribute :PageRequestDto >
-    // requestDto
-    public void getList(@ModelAttribute(name = "requestDto") PageRequestDto requestDto, Model model) {
+    public void getList(@ModelAttribute("requestDto") PageRequestDto requestDto, Model model) {
         log.info("도서 전체 목록 요청 {}", requestDto);
 
         List<BookDto> result = bookService.getList(requestDto);
         int total = bookService.getTotalCnt(requestDto);
 
         log.info("list {}", result);
-        log.info("total {}", result);
+        log.info("total {}", total);
+
+        model.addAttribute("result", new PageResultDto<>(requestDto, total, result));
 
     }
 
     // 상세조회
     @GetMapping(value = { "/read", "/modify" })
-    public void getMethodName(@RequestParam Long id, @ModelAttribute(name = "requestDto") PageRequestDto requestDto,
+    public void getMethodName(@RequestParam Long id, @ModelAttribute("requestDto") PageRequestDto requestDto,
             Model model) {
         log.info("도서 상세 요청 {}", id);
 
@@ -59,11 +60,10 @@ public class BookController {
     }
 
     @PostMapping("/modify")
-    // redirect 로 read로 리턴했기에 dto값 사용 불가
-    public String postModify(BookDto dto, RedirectAttributes rttr,
-            @ModelAttribute(name = "requestDto") PageRequestDto requestDto) {
+    public String postModify(BookDto dto, @ModelAttribute("requestDto") PageRequestDto requestDto,
+            RedirectAttributes rttr) {
         log.info("도서 수정 요청 {}", dto);
-        log.info("requestDto {}", requestDto);
+        log.info("requestDto {} ", requestDto);
 
         Long id = bookService.update(dto);
 
@@ -77,10 +77,11 @@ public class BookController {
     }
 
     @PostMapping("/remove")
-    public String postMethodName(@RequestParam Long id, @ModelAttribute(name = "requestDto") PageRequestDto requestDto,
+    public String postMethodName(@RequestParam Long id, @ModelAttribute("requestDto") PageRequestDto requestDto,
             RedirectAttributes rttr) {
-        log.info("도서 삭제 요청 {}", id);
-        log.info("requestDto {}", requestDto);
+        log.info("도서 삭제 요청 {} ", id);
+        log.info("requestDto {} ", requestDto);
+
         bookService.delete(id);
 
         rttr.addAttribute("page", requestDto.getPage());

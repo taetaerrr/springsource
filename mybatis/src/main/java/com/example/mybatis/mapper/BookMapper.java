@@ -11,7 +11,7 @@ import com.example.mybatis.dto.PageRequestDto;
 public interface BookMapper {
     public BookDto read(Long id);
 
-    public List<BookDto> listAll(PageRequestDto pageRequestDto);
+    public List<BookDto> listAll(PageRequestDto requestDto);
 
-    public int totalCnt(PageRequestDto pageRequestDto);
+    public int totalCnt(PageRequestDto requestDto);
 }

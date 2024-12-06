@@ -30,12 +30,10 @@
         </li>
       </ul>
       <form class="d-flex" role="search" th:action="@{list}">
-        <!-- 검색 후 처음에 띄울 페이지는 1 page 임 -->
+        <!-- 검색 후 처음에 띄울 페이지는 1 page 임-->
         <input type="hidden" name="page" value="1" />
-        <!-- 클래스명을 기준으로 앞자리만 소문자로 바꿔서 사용 pageRequestDto / modelattribute로 requestDto이름 바꿈-->
         <input type="hidden" name="size" th:value="${requestDto.size}" />
         <select name="type" id="type" class="form-select me-2">
-          <!-- 검색한 내용 유지 -->
           <option value="" th:selected="${requestDto.type == null}">
             조건 선택
           </option>

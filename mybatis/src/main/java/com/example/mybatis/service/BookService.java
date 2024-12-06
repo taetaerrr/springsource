@@ -26,5 +26,4 @@ public interface BookService {
     List<CategoryDto> getCateList();
 
     List<PublisherDto> getPubList();
-
 }
